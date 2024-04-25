@@ -1,4 +1,6 @@
 import logging
+import time
+import threading
 from typing import Optional
 
 from BT import Bluetooth
@@ -28,10 +30,6 @@ class BTInterface:
     def get_UID(self):
         return self.bt.serial_read_byte()
 
-    def send_action(self, dirc):
-        # TODO : send the action to car
-        return
-
     def end_process(self):
         self.bt.serial_write_string("e")
         self.bt.disconnect()
@@ -40,4 +38,8 @@ class BTInterface:
 if __name__ == "__main__":
     test = BTInterface()
     test.start()
+    while True:
+        readThread = threading.Thread(target=test.bt.serial_read_byte)
+        readThread.daemon = True
+        readThread.start()
     test.end_process()

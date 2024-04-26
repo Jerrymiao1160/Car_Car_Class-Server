@@ -90,6 +90,8 @@ bool is_node();
 BT_CMD command = NOTHING;
 bool start = true;// if true, then request command until Bluetooth send some commands
 bool in_node = false;
+int commandarr[17] = {3,3,2,3,4,3,1,1,2,1,4,2,2,3,1,4,3};
+int now = 0;
 void loop() {
   if (start){
     MotorWriting(0,0);
@@ -97,6 +99,7 @@ void loop() {
     if (command != NOTHING) {
       start = false;
       state = true;
+      forward();
     }
   }
   if (command == STOP) {//Haven't used yet(May be unnecessary)
@@ -114,7 +117,9 @@ void loop() {
     if (is_node() && !in_node) {//when you enter a node
       in_node = true;
       command = ask_BT();
+      //Serial.println(command);
       Serial.println("entered a node");
+      //BT.write("entered a node\n");
       if (command == LEFT){
         left_turn();
       }
@@ -127,14 +132,21 @@ void loop() {
       else if (command == RIGHT) {
         right_turn();
       }
-      command = TRACKING;
+      else if (command == STOP) {
+        MotorWriting(0,0);
+        //BT.write("stop success\n");
+        state = false;
+        goto next;
+      }
       tracking();
     }
+    next:
     if (!is_node() && in_node) {//when you exit a node
       in_node = false;
       Serial.println("exit node");
+      //BT.write("exit a node\n");
     }
-    delay(100);
+    delay(200); //
   }
 }
 

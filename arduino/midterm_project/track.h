@@ -38,9 +38,9 @@ void MotorWriting(double vL, double vR) {
 }  // MotorWriting
 
 void reverse() {
-    delay(700);
+    delay(200);
     MotorWriting(255,-255);
-    delay(300);
+    delay(300); //
     while(!digitalRead(IRpin_M)) {
         MotorWriting(150,-150);
         delay(10);
@@ -48,12 +48,12 @@ void reverse() {
 }
 void forward() {
   MotorWriting(200,200);
-  delay(800);
+  delay(800); //
 }
 void right_turn() {
-    delay(500); // Wait until the car goes into the center
+    delay(400); // Wait until the car goes into the center       //
     MotorWriting(255,-255);
-    delay(200);
+    delay(150); //
     while(!digitalRead(IRpin_M) || digitalRead(IRpin_LL) || digitalRead(IRpin_RR)) {
         MotorWriting(100,-100);
         delay(10);
@@ -61,9 +61,9 @@ void right_turn() {
 }
 
 void left_turn() {
-    delay(500); // Wait until the car goes into the center
+    delay(400); // Wait until the car goes into the center       //
     MotorWriting(-255,255);
-    delay(200);
+    delay(150); //
     while(!digitalRead(IRpin_M) || digitalRead(IRpin_LL) || digitalRead(IRpin_RR)) {
         MotorWriting(-100,100);
         delay(10);
@@ -82,14 +82,14 @@ void tracking() {
   }
   delta /= high_num;
   if (delta > 1) {
-    MotorWriting(200, -200);
+    MotorWriting(200, 150); //
     return;
   }
   if (delta < -1) {
-    MotorWriting(-200, 200);
+    MotorWriting(150, 200); //
     return;
   }
-  MotorWriting(150 + 70 * delta, 150);
+  MotorWriting(180 + 30 * delta, 180); //
   /*int l2 = digitalRead(IRpin_LL);
   int l1 = digitalRead(IRpin_L);
   int m = digitalRead(IRpin_M);

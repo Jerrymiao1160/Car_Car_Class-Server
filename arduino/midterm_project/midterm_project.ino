@@ -133,6 +133,7 @@ void loop() {
         right_turn();
       }
       else if (command == STOP) {
+        delay(1000);
         MotorWriting(0,0);
         //BT.write("stop success\n");
         state = false;
@@ -146,7 +147,7 @@ void loop() {
       Serial.println("exit node");
       //BT.write("exit a node\n");
     }
-    delay(200); //
+    delay(100); //Changed Here
   }
 }
 

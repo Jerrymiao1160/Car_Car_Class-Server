@@ -53,7 +53,7 @@ void forward() {
 void right_turn() {
     delay(400); // Wait until the car goes into the center       //
     MotorWriting(255,-255);
-    delay(150); //
+    delay(200); //changed here
     while(!digitalRead(IRpin_M) || digitalRead(IRpin_LL) || digitalRead(IRpin_RR)) {
         MotorWriting(100,-100);
         delay(10);
@@ -63,7 +63,7 @@ void right_turn() {
 void left_turn() {
     delay(400); // Wait until the car goes into the center       //
     MotorWriting(-255,255);
-    delay(150); //
+    delay(200); //changed here
     while(!digitalRead(IRpin_M) || digitalRead(IRpin_LL) || digitalRead(IRpin_RR)) {
         MotorWriting(-100,100);
         delay(10);
@@ -73,6 +73,9 @@ void left_turn() {
 int weight[5] = { -2, -1, 0, 1, 2 };
 int sensors[5] = { IRpin_LL, IRpin_L, IRpin_M, IRpin_R, IRpin_RR };
 void tracking() {
+  if(!digitalRead(IRpin_LL)&&!digitalRead(IRpin_L)&&!digitalRead(IRpin_M)&&!digitalRead(IRpin_R)&&!digitalRead(IRpin_RR)){
+    return; //added this but actually no need (?
+  }
   // TODO: find your own parameters!
   double delta = 0;
   int high_num = 0;
@@ -81,15 +84,15 @@ void tracking() {
     high_num += digitalRead(sensors[i]);
   }
   delta /= high_num;
-  if (delta > 1) {
+  /*if (delta > 1) {
     MotorWriting(200, 150); //
     return;
   }
   if (delta < -1) {
     MotorWriting(150, 200); //
     return;
-  }
-  MotorWriting(180 + 30 * delta, 180); //
+  }*/
+  MotorWriting(180 + 30 * delta, 180); ////
   /*int l2 = digitalRead(IRpin_LL);
   int l1 = digitalRead(IRpin_L);
   int m = digitalRead(IRpin_M);

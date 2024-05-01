@@ -10,6 +10,7 @@
 // for RFID
 #include <MFRC522.h>
 #include <SPI.h>
+#include <string.h>
 
 /*===========================define pin & create module object================================*/
 // BlueTooth
@@ -92,6 +93,7 @@ bool start = true;// if true, then request command until Bluetooth send some com
 bool in_node = false;
 int commandarr[17] = {3,3,2,3,4,3,1,1,2,1,4,2,2,3,1,4,3};
 int now = 0;
+String prev_s = "";
 void loop() {
   if (start){
     MotorWriting(0,0);
@@ -108,9 +110,14 @@ void loop() {
   }
   //Read RFID constantly
   byte  idSize;
-  byte* id = rfid(idSize);
-  if (id) {
-    send_byte(id, idSize);
+  String S = rfid(idSize);
+  if (S != "" && S!=prev_s) {
+    Serial.print("prev:");
+    Serial.println(prev_s);
+    Serial.print("current:");
+    Serial.println(S);
+    prev_s = S;
+    BT.write(S.c_str());
   }
   if (state) {
     tracking();
